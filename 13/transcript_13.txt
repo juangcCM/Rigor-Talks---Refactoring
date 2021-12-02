@@ -1,0 +1,334 @@
+hola amigos del rigor qué tal cómo
+estáis hoy vamos a empezar una serie de
+tres vídeos donde vamos a hablar de
+factoring de un caso real vale
+la idea es que vamos a un trozo de
+código o de un proyecto que igual os
+podéis sentir identificados porque me ha
+pasado en varios casos
+de lógica acoplada escrita en el web
+controller directamente y vamos a ver
+algunos trucos para uno en una primera
+fase desacoplar el código del web
+controller directamente nos lo vamos a
+llevar a un servicio con las
+dependencias
+invertidas en un siguiente vídeo vamos a
+ver cómo podemos ir y testear ese
+servicio completamente ahí tenemos
+utilizar técnicas de vídeos que hemos
+visto hasta ahora y en un último vídeo
+lo que haremos será enriquecer el
+dominio a través de mover lógica de
+negocio del servicio aplicación
+internamente a las entidades para que
+ellas contengan la mayor lógica de
+información posible así que vamos a
+empezar con el vídeo
+hay que enseñar que tenéis un
+un gestor documental por ejemplo que en
+este caso se puede llamar tokman ayer en
+el que tenemos tenéis procesos de
+revisión de documentos en este caso
+podéis que se puede crear una review
+sobre un sobre un documento y se puede
+actualizar en este código como podéis
+ver tenemos un código en el que bueno
+pues excede una review se crean fechas
+se comprueba cierto estado de la review
+y en función de eso se hace cierta
+lógica se actualiza la información por
+ejemplo se te han el score del proceso
+de revisión al temas de errores incluso
+se se lanzan algunos eventos aquí al
+parecer trigger review events y get
+service súper loco controller pues tiene
+pinta de que tiene que ver algo con con
+temas de login
+bueno pues lo primero que vamos es que
+este esto es el web controller y es una
+aplicación derivada de sílex y como
+comprenderéis crean 'the star' esto pues
+no es trivial
+agregar la lógica en los web en los
+controladores directamente hace que con
+cada funcionalidad que hayamos agregando
+pues el método se vaya en la clase vez
+no muy grande y al final acabemos con
+controllers de 630 líneas que tienen
+toda la lógica de negocio y que se hacen
+muy difíciles de testear así que nos
+interesa extraer esta lógica y llevar
+nuevas y llevamos la fuera a servicios
+así que vamos a pensar vamos a empezar
+con ello lo primero que vemos aquí es
+que si trabajáis con un buen y deberéis
+pues por ejemplo esta variable nuestra
+definida y variables no definidas
+espero un estado rápido pero tienen
+pinta de que no se usan en este caso de
+ahí tampoco así que este factor era muy
+sencillo eliminar código que no se usa
+siguiendo las políticas de quien code
+código comentado no es código que
+desaparece más y que en ese sentido
+fácil vamos a ver ya hemos eliminado a
+tres líneas aquí podéis ver código en
+este y este el pse con este fraude en el
+que podemos aplicar una cláusula de
+guarda pero en este caso quiero mantener
+este código porque aplicar una cláusula
+de wardak y significaría invertir en
+negar esta condición y si ese tipo de
+refacture y ya es un reflector que
+cambia cierto comportamiento es decir ya
+delicado por tanto lo que me gustaría
+aplicar es el máximo número de factoring
+seguros y luego ya entraremos en esa
+parte de lógica
+lo primero que suelo hacer yo en este
+caso es quedarme lo que se llama un
+application service un application
+service no es más que una clase que es
+responsable
+como punto de entrada de ejecutar una
+funcionalidad de la aplicación un caso
+de uso un application service un comando
+janer a veces se le llama también ahora
+veremos algunas diferencias
+vendría a ser
+el listado de funcionalidades de vuestro
+programa o esta aplicación hace dar de
+alta a usuarios de trabajo a usuarios
+cambiar la imagen del avatar de un
+usuario ese tipo de funcionalidades que
+podríais detrás de la caja del software
+tienen acerca de los casos de uso así
+que en este caso
+se puede llamar application service vale
+esto es una opción puede ser command
+handler esto es otra opción hay una
+diferencia muy útil en la aplicación
+servicios y como andrés ya lo veremos y
+también puede ser que busquéis yo en las
+consultorías utilizó nuevamente busquéis
+porque lo hace mucho más evidente a
+gente de lópez que no están
+acostumbrados al concepto de application
+service eso o más dentro en design en el
+caso de búsqueda como muy evidente que
+la actualizar una review es un caso es
+un caso de uso
+adelante
+[Música]
+un caso de uso
+ah
+de infraestructura para poder ejecutarse
+y tendrá nuevamente un método
+a veces también se pone que cogerá los
+valores y ejecutará cierta lógica ese es
+un poco lo que hace una vamos a
+evolucionar vamos a empezar con los
+factores sobre esta esta clase de aquí
+lo primero que podéis ver es qué
+a mí me gusta siempre identificar la
+diferencia de lo que es lógica de
+negocio y lógica de infraestructura
+vamos a de la lógica de negocio y vamos
+a ver la estructura mejor dicho en este
+caso os fijáis hay un método que pasado
+una review nasa torna el líder de la
+vida de la reunión a la review o ve
+cierta lógica aquí está claro que puede
+haber influido alguna parte de
+infraestructura aquí vemos los flujos de
+estos luces tienen que ver con el city
+manager de dock train por lo tanto
+estructura podríamos hablar de qué
+lanzar eventos depende del tipo de
+infesta tura que hay abajo para lanzar
+eventos poder es un tema estructural y
+también el login
+una cosa es lugar por definición y otra
+cosa es utilizar monólogos por ejemplo
+algún tipo de librería particular para
+logar así que estos elementos van a ser
+en los que tenemos que apuntar así que
+no mente empezó a ver entre los hagas
+diferencias de esa siguiente forma si
+pincho en get aquí tenemos un método que
+efectivamente acceder al get manager el
+repositorio y el retorno el repositorio
+de reviews entonces estamos
+acostumbrados a hacer extractos que
+escoge un trozo de código y extraerlo a
+un método esto también se puede hacer al
+3 que es el in line
+entonces en este caso dejadme deciros
+que si copio este código de aquí y lo
+pongo review
+vale estamos de acuerdo que esto de aquí
+sigue funcionando tal cual no ha hecho
+un milímetro de cogido tal y como
+directamente y lo he cambiado para
+dejarme extraer a una variable esta
+parte de aquí está parte aquí si os
+fijáis get manager select y manager y el
+propósito es alimento de doctor en que
+retorna un repositorio de esta entidad
+en concreto así que es la extra una
+variable y le llamo review repositorio
+de por sí
+ya tenemos por un lado una de las
+dependencias comprobamos si este review
+propósito 18 demás sitios aparentemente
+no sólo era y por lo tanto a está
+perfecto
+vamos con la siguiente
+tenemos este que esto no hay ningún
+problema el look day del review podría
+ser un método sin problemas de una
+entidad no debe ser un problema aquí
+tenemos el plus manager luis manager si
+utilizado train lo más normal es que
+haya que haga un jet manager o manager y
+flecha fluir vale entonces
+vamos a verlo activamente que es manager
+también de esto
+vamos a dar un line también de esto y
+esto es lo que es esta prueba
+así que este código es el mismo que
+antes ahora dejadme el manager
+para invertir codependencia y dejarme
+acceder a una variable
+y también cambiamos la otra
+está más arriba del todo
+si os fijáis ahora y tenemos una
+variable por aquí dando vueltas que
+tiene que ver con el tema leyes que
+hemos extraído vamos a hacer lo mismo lo
+siguiente con el trigger event pues este
+método al parecer
+con fundamento coge un servicio que se
+llama event dispatches para hacer
+eventos el evento deben dispatcher de
+symphony cogemos un evento creemos
+elemento para través la review y se
+dispara pues dejaron hacer más o menos
+lo mismo dejar de hacer el line de este
+proceso aquí y dejar de que este
+método y hacer un line
+es una diferencia lo que vamos a hacer
+es review trigger event el event el
+nombre del evento es este de aquí en
+este caso por aquí
+estamos de acuerdo que esto es el código
+sigue siendo exactamente el mismo
+comportamiento vamos a hacer igual
+constantes con el repositorio doc traen
+lo que nos interesa es esto de aquí que
+es lo que nos da el event dispatches
+vamos a extraer una variable y denis
+thatcher
+y déjame
+claro bien el último servicio que nos
+queda es este super love controller que
+es un blogger entonces en este caso ya
+está más o menos separado de la manera
+que nos interesaría vamos a el get
+service y vamos a extraer una variable
+que va a ser nuestro
+y este desde aquí nos lo llevamos hacia
+arriba
+y ésta está como una variable y todo
+funcionaria vale entonces ahora dejadme
+que coja todo esto de aquí
+dejarme que me lo lleve
+a la lógica del éxito
+si os fijáis en el éxito vamos a poner
+lo mismo que recibe el update
+de acuerdo
+y qué vamos a hacer vamos a retornar a
+él
+update review news case conmigo
+tenemos pasar algunas dependencias
+podréis
+vamos a usar el método excel
+jude con los parámetros que venían de la
+recuerda
+tenemos que poner un paréntesis para
+bien
+vale
+y esto sería la forma que nosotros
+queremos no hace falta y las
+dependencias que tenemos identificadas
+review
+deben dispatcher keylogger las podríamos
+pasar aquí directamente
+aquí
+no queremos
+la tenemos
+lo queremos
+de casa
+de acuerdo así que si os fijáis cómo
+queda el wii controller ahora es que
+calculó las dependencias sea como sea es
+decir en este caso teníamos unas dice
+mezcla sílex y compañía sílex con un
+service container de symphony y dock
+traen por ahí como se ha sido
+identificar cada una de las dependencias
+extraerla una variable esa variable es
+la que estamos pasando a nuestro caso de
+uso que vamos a ejecutar y lo ejecutamos
+que los momentos que estamos recibiendo
+ok
+bien nos vamos a acabar con el código
+que hay internamente en nuestro caso
+tenemos es fijáis cuatro dependencias
+estas dependencias dejadme que las
+defina aquí
+ok y vamos a crear las postes
+[Música]
+repository
+manager y manager dispatcher dispatcher
+y vamos a hacer lo mismo con el blogger
+con el blogger y con el nuevo
+esto aquí nos lo podemos borrar perfecto
+para tener los atributos en esto
+fácilmente podéis darle al centro
+y ya lo tenemos así que este caso de uso
+ya está con las dependencias que
+necesita a través del constructo vale y
+ahora en este trozo de código que hacía
+referencia a las variables ahora nos
+tocará cambiarlo
+entonces aquí nos toca poner un gris
+nos toca poner aquí aquí
+en nuestro país en el lugar
+y como podéis ver
+lo que antes teníamos directamente
+metido en el hue controller ahora lo
+tenemos como una clase independiente con
+las dependencias que se invierten
+en el que se puede utilizar fácilmente y
+al tener esas variables inyectadas o
+basadas en la constructora no será mucho
+más sencillo poder hacer news y pasarle
+mox test de vélez para simular cierto
+comportamiento que nos interese el
+código como os dais cuenta sigue siendo
+exactamente el mismo en muchos factores
+el efecto de inseguros
+y de esta manera hemos podido extraer la
+lógica del hue controller a un servicio
+de lo que se podrá invocar después desde
+un en point web desde un empleo en rest
+restrepo o incluso desde un worker que
+recibe un evento y en función del evento
+de ejecutar este tipo de caso de uso
+bien espero que os haya gustado a mí de
+rigor be with you
+se llama sigamos ref actor ethan dos
+chicos un abrazo
+bueno
